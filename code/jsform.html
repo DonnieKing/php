@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<form action="" id="J_form" name="J_form" method="post" onsubmit="return checkForm()">
+		<table border="1" width="400px" cellspacing="0" align="center">
+			<tr>
+				<td align="right">请只输入数字(长度小于10):</td>
+				<td align="left"><input type="text" name="num"></td>
+			</tr>
+			<tr>
+				<td align="right">请只输入英文字母:</td>
+				<td align="left"><input type="text" name="a1"></td>
+			</tr>
+			<tr>
+				<td align="right">请做选择:</td>
+				<td align="left"><select name="lan">
+					<option value="english">英语</option>
+					<option value="french">法语</option>
+					<option value="panish">西班牙语</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><input type="submit" value="提交"></td>
+			</tr>
+		</table>
+	</form>
+
+	<script>
+		//var oForm = document.J_form;
+		var oForm = document.getElementById('J_form');
+			function checkForm(){
+				if(oForm.num.value==""||oForm.a1.value=="")
+				{
+					alert('任何一项都不能为空');
+					return false;
+				}
+				
+
+				if(oForm.num.value!="")
+				{
+					var oNum = oForm.num.value;
+					if(oNum.length>9)
+					{
+						alert('第一个文本框字符串长度要小于10');
+						return false;
+					}
+					for(var i=0;i<oNum.length;i++)
+					{
+						if((oNum.charAt(i)<'0')||(oNum.charAt(i)>'9'))
+						{
+							alert('必须是数字');
+							return false;
+						}
+					}
+
+				}
+
+				  if(oForm.a1.value!="")
+				  {
+				  	var oA1 = oForm.a1.value;
+				  	 for(var i=0;i<oA1.length;i++)
+				  	 {
+				  	 	if(((oA1.charAt(i)<'a')||(oA1.charAt(i)>'z'))&&((oA1.charAt(i)<'A')||(oA1.charAt(i)>'Z')))
+				  	 	{
+				  	 		alert('必须是字母');
+				  	 		return false;
+				  	 	}
+				  	 }
+				  }
+
+				  var oLan = oForm.lan.value;
+				  var str = '您的选择是:\n'+oNum+'\n'+oA1+'\n'+oLan;
+				  alert(str);
+			}
+	</script>
+</body>
+</html>

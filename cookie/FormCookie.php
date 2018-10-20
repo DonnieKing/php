@@ -5,10 +5,13 @@
  * Date: 2018/10/10 0010
  * Time: 17:59
  */
+session_start();
+$_SESSION['uid'] = "wangchu";
 header("content-type:text/html;charset=utf-8");
 error_reporting(E_ALL & ~E_NOTICE);  //表示提示除去 E_NOTICE 之外的所有错误信息
 
 // 读取COOKIE的用户名和密码的值即可
+
 if($_COOKIE['name'] != "")
     {
         $CKNAME = $_COOKIE['name'];
@@ -18,12 +21,13 @@ if($_COOKIE['name'] != "")
         $CKPASS = $_COOKIE['password'];
     }
 
-    echo $CKNAME."<br>";
-    echo $CKPASS;
+   // echo $CKNAME."<br>";
+   // echo $CKPASS;
 
 
 ?>
 
+<a href="receiveCookieSession.php" >111</a>
 <form action="" method="post">
     用户名：<input type="text" name="name" id="name" value="<?php echo $CKNAME; ?>"><br>
     密码：<input type="text" name="password" id="password" value="<?php echo $CKPASS; ?>"><br>
@@ -42,6 +46,8 @@ if($_COOKIE['name'] != "")
     {
         setcookie("name","$name",time()+60*60*24*30);
         setcookie("password","$password",time()+60*60*24*30);
+        $_SESSION['name']="$name" ;
+        $_SESSION['password']="$password" ;
     }
     }
 ?>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	 <form name="login" action="3-9.php" method="post" onsubmit="return check()">
+		用户名: <input type="text" name="username"><br>
+		<input type="submit" value="登录系统">
+	 </form>
+
+	 <script>
+	 		function check(){
+	 			if(login.username.value=="")
+	 			{
+	 				alert("请输入用户名");
+	 				return false;
+	 			}
+	 		}
+	 </script>
+</body>
+</html>

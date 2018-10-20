@@ -10,14 +10,14 @@
      setcookie("user","wangchu",time()+3600); //setcookie() 函数必须位于 <html> 标签之前
 
      echo $_COOKIE['user']."<br>"; // Print a cookie
-     print_r($_COOKIE);             // A way to view all cookies
-     echo "<br>";
+        print_r($_COOKIE);             // A way to view all cookies
+        echo "<br>";
 
-    if(isset($_COOKIE))
-    {
-        echo "welcome ".$_COOKIE['user']."<br>";
-    }
-    else{
+        if(isset($_COOKIE))
+        {
+            echo "welcome ".$_COOKIE['user']."<br>";
+        }
+        else{
         echo "welcome guest"."<br>";
     }
 
