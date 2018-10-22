@@ -8,9 +8,10 @@ ob_start();
  */
 
 //打开目标图片
-$m = 'http://img.php.cn/upload/course/000/000/002/5833ebba648cf229.png';
-$dst = imagecreatefrompng($m);
 
+$dst = imagecreatefromjpeg('mao.JPG');
+$color = imagecolorallocate($dst,8,2,133);
+ /*
 //打开Logo来源图片
 $logo='http://img.php.cn/upload/course/000/000/002/5833ebe90cc11285.png';
 $src = imagecreatefrompng($logo);
@@ -31,9 +32,12 @@ $dst_y = $dst_info[1] - $src_info[1];
 
 //要将图片加在右下脚
 imagecopymerge($dst, $src, $dst_x, $dst_y, 0, 0, $src_info[0], $src_info[1], 100);
+ */
 
-header('Content-type:image/png');
-imagepng($dst);
+  imagestring($dst,5,50,200,"China",$color);
+
+header('Content-type:image/jpeg');
+imagejpeg($dst);
 
 imagedestroy($dst);
 
