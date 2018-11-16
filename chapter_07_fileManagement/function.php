@@ -326,3 +326,81 @@ function dow_file($filename)
 }
 //dow_file('123.jpg');
 
+
+
+
+/**
+ * 单文件上传操作
+ * @param $fileInfo // 上传的文件信息
+ * @param string $uploadPath // 上传的指定目录
+ * @param array $allowExt // 上传的文件类型
+ * @param int $maxSize // 上传文件最大值
+ * @return string       提示信息
+ */
+function upload_file($fileInfo,$uploadPath='./upload',$allowExt=['jpg','png','jpeg','gif','txt','html'],$maxSize=1000000)
+{
+    // 判断上传错误号
+    if($fileInfo['error'] === 0)
+    {
+        // 获取文件后缀
+        $ext = strtolower(pathinfo($fileInfo['name'],PATHINFO_EXTENSION));
+        // 判断文件类型
+        if(!in_array($ext,$allowExt))
+        {
+            return '非法文件类型';
+        }
+        // 判断文件大小
+        if($fileInfo['size']>$maxSize)
+        {
+            return '超出文件上传最大值';
+        }
+        // 判断文件上传方式
+        //is_uploaded_file — 判断文件是否是通过 HTTP POST 上传的
+        if(!is_uploaded_file($fileInfo['tmp_name']))
+        {
+            return '非法上传';
+        }
+        // 判断需要移动到的目录是否存在
+        if(!is_dir($uploadPath))
+        {
+            mkdir($uploadPath,0777,true);
+        }
+        // 生成唯一的文件名 uniqid 生成唯一id  microtime 返回当前unix时间戳中的微秒
+        $uniName = md5(uniqid(microtime(true),true)).".".$ext;
+        // 拼接路径以及文件名
+        $dest = $uploadPath."/".$uniName;
+        //move_uploaded_file — 将上传的文件移动到新位置
+        // 将文件移动到指定目录
+        if(!move_uploaded_file($fileInfo['tmp_name'],$dest))
+        {
+            return '文件上传失败';
+        }
+        return '文件上传成功';
+    }
+    else
+    {
+        switch ($fileInfo['error'])
+        {
+            case 1:
+                $res = '上传的文件超过了 php.ini 中 upload_max_filesize 选项限制的值';
+                break;
+            case 2:
+                $res = '上传文件的大小超过了 HTML 表单中 MAX_FILE_SIZE 选项指定的值';
+                break;
+            case 3:
+                $res = '文件只有部分被上传';
+                break;
+            case 4:
+                $res = '没有文件被上传';
+                break;
+            case 6:
+                $res = '找不到临时文件夹';
+                break;
+            case 7:
+                $res = '文件写入失败';
+                break;
+        }
+        return $res;
+    }
+}
+
