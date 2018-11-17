@@ -456,15 +456,21 @@ function del_folder($path)
     //循环读取目录中的内容
     while($item = readdir($dir))
     {
+        // 判断.和.. 特别文件或目录
         if($item != "." && $item != "..")
         {
+            // 判断是否为真正的文件
             if(is_file($path."/".$item))
             {
+                // 删除文件操作
                 unlink($path."/".$item);
             }
+            // 判断是否为真正的目录
             if(is_dir($path."/".$item))
             {
+                // 回调方法
                 $func = __FUNCTION__;
+                // 使用方法
                 $func($path."/".$item);
             }
         }
@@ -476,3 +482,75 @@ function del_folder($path)
     return '目录删除成功';
 }
 //echo del_folder('html');
+
+
+/**
+ * 目录复制操作
+ * @param $src // 源目录
+ * @param $dest // 目标目录
+ * @return string 提示信息
+ */
+function copy_dir($src,$dest)
+{
+    //判断需要复制的目录下是否存在相同的目录或文件
+    if(!file_exists($dest))
+    {
+        mkdir($dest,0777,true);
+    }
+    else
+    {
+        return '该目录下存在相同文件';
+    }
+    // 打开目录
+    $dir = opendir($src);
+    // 循环读取目录中的内容
+    while($item = readdir($dir))
+    {
+        // 判断.和.. 特别文件或目录
+        if($item != "." && $item != "..")
+        {
+            // 判断是否为真正的文件
+            if(is_file($src."/".$item))
+            {
+                // 复制操作
+                copy($src."/".$item,$dest."/".$item);
+            }
+            // 判断是否为真正的目录
+            if(is_dir($src."/".$item))
+            {
+                // 回调方法
+                $func = __FUNCTION__;
+                // 使用方法
+                $func($src."/".$item,$dest."/".$item);
+            }
+        }
+    }
+    // 关闭目录
+    closedir($dir);
+    return "目录复制成功！";
+}
+//echo copy_dir('text1','upload/text1');
+
+
+/**
+ * 目录重命名操作
+ * @param $oldName // 源目录名
+ * @param $newName // 新目录名
+ * @return string   提示信息
+ */
+function rename_dir($oldName, $newName)
+{
+    if(!file_exists($newName))
+    {
+        if(rename($oldName,$newName))
+        {
+            return '重命名成功';
+        }
+        else
+        {
+            return '重命名失败';
+        }
+    }
+    return "已经存在该文件或目录！";
+}
+//echo rename_dir('upload','newUpload');
