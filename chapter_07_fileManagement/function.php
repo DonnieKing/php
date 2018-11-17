@@ -652,4 +652,4 @@ function dir_size($path)
      }
      return $sum;
 }
-//echo dir_size('newUpload');
+//echo trans_byte(dir_size('newUpload'));
