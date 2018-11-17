@@ -554,3 +554,102 @@ function rename_dir($oldName, $newName)
     return "已经存在该文件或目录！";
 }
 //echo rename_dir('upload','newUpload');
+
+
+
+/**
+ * 目录剪切操作
+ * @param $src // 源目录
+ * @param $dest // 目标目录
+ * @return string   提示信息
+ */
+function cut_dir($src,$dest)
+{
+    // 判断是否存在目标目录
+    if(is_dir($dest))
+    {
+        // 拼接目标理解
+        $dest = $dest."/".$src;
+        // 判断目标目录下是否存在相同目录
+        if(!file_exists($dest))
+        {
+            // 判断并剪切操作
+            if(rename($src,$dest))
+            {
+                return '目录剪切成功';
+            }
+            else
+            {
+                return '目录剪切失败';
+            }
+        }
+        else
+        {
+            return '该目录下已存在此文件';
+        }
+    }
+    else
+    {
+        return '目标不是目录';
+    }
+}
+//echo cut_dir('text','newUpload');
+
+
+/**
+ * 目录读取操作
+ * @param $path // 读取的目录
+ * @return array    数组|失败
+ */
+function read_dir($path)
+{
+    $arr = [];
+    $dir = opendir($path);
+    while($item = readdir($dir))
+    {
+        if($item != "." && $item != "..")
+        {
+            if(is_file($path."/".$item))
+            {
+                $arr['file'][] = $item;
+            }
+            if(is_dir($path."/".$item))
+            {
+                $arr['dir'][] = $item;
+            }
+        }
+    }
+    closedir($dir);
+    return $arr;
+}
+//var_dump(read_dir('newUpload'));
+
+
+/**
+ * 目录大小查询操作
+ * @param $path     // 需要查询大小的目录
+ * @return int      // 目录的大小
+ */
+function dir_size($path)
+{
+    $sum = 0;
+    global $sum;
+    $dir = opendir($path);
+    while($item = readdir($dir))
+    {
+        if($item != "." && $item != "..")
+        {
+            if(is_file($path."/".$item))
+            {
+                $sum += filesize($path."/".$item);
+            }
+            if(is_dir($path."/".$item))
+            {
+                $func = __FUNCTION__;
+                $func($path."/".$item);
+            }
+        }
+     }
+     return $sum;
+}
+//echo dir_size('newUpload');
