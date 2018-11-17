@@ -2,6 +2,20 @@
 //封装创建文件方法和删除文件方法
 
 /**
+   * PHP的 file_exists = is_dir + is_file
+    它既可以判断文件是否存在，又可以判断目录是否存在。但这样一个全面的函数执行效率非常低，所以结论是：
+    如果要判断目录是否存在，请用独立函数 is_dir(directory)
+    如果要判断文件是否存在，请用独立函数 is_file(filepath)
+    is_file 只判断文件是否存在；
+    file_exists 判断文件是否存在或者是目录是否存在；
+    is_dir 判断目录是否存在；
+    查看手册，虽然这两个函数的结果都会被缓存，但是is_file却快了N倍。
+    还有一个值得注意的：
+    文件存在的情况下，is_file比file_exists要快N倍；
+    文件不存在的情况下，is_file比file_exists要慢；
+ */
+
+/**
  * 文件创建操作
  * @param $filename //需要创建的文件名
  * @rerurn string  //提示信息
@@ -404,3 +418,61 @@ function upload_file($fileInfo,$uploadPath='./upload',$allowExt=['jpg','png','jp
     }
 }
 
+
+/*————————————————————————————————目录操作方法————————————————————————————*/
+
+/**
+ * 目录创建操作
+ * @param $dirName // 需要创建的目录名称
+ * @return string   提示信息
+ */
+function create_folder($dirName)
+{
+    //判断是否存在相同目录或文件
+    if(file_exists($dirName))
+    {
+        return '存在相同文件';
+    }
+    //创建目录并判断
+    if(mkdir($dirName,0777,true))
+    {
+        return '目录创建成功';
+    }
+    return '目录创建失败！';
+
+}
+//echo create_folder('html/css');
+
+
+/**
+ * 目录删除操作
+ * @param $path // 需要删除的目录
+ * @return string   提示信息
+ */
+function del_folder($path)
+{
+    //打开目录
+    $dir = opendir($path);
+    //循环读取目录中的内容
+    while($item = readdir($dir))
+    {
+        if($item != "." && $item != "..")
+        {
+            if(is_file($path."/".$item))
+            {
+                unlink($path."/".$item);
+            }
+            if(is_dir($path."/".$item))
+            {
+                $func = __FUNCTION__;
+                $func($path."/".$item);
+            }
+        }
+    }
+    //关闭目录
+    closedir($dir);
+    //删除目录
+    rmdir($path);
+    return '目录删除成功';
+}
+//echo del_folder('html');
