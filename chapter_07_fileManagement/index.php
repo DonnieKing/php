@@ -117,25 +117,43 @@ include "config.php";
      ?>
 
 
-<!--    <tr>-->
-<!--        <td>--><?php //echo $i;?><!--</td>-->
-<!--        <td>--><?php //echo $v?><!--</td>-->
-<!--        <td>--><?php //$src = filetype($p) =="file"?"file_ico.png":"folder_ico.png" ?><!--<img src="images/folder_ico.png" title="文件夹"></td>-->
-<!--        <td>--><?php //$sum=0; echo trans_byte(dir_size($p))?><!--</td>-->
-<!--        <td><img class="small" src="images/folder_ico.png"></td>-->
-<!--        <td><img class="small" src="images/folder_ico.png"></td>-->
-<!--        <td><img class="small" src="images/folder_ico.png"></td>-->
-<!--        <td>2018-11-18 19:42:20</td>-->
-<!--        <td>2018-11-18 19:42:20</td>-->
-<!--        <td>2018-11-18 19:42:20</td>-->
-<!--        <td>111-->
-<!--<!--            <a href="index.php?path=-->--><?php ////echo $p;?><!--<!--"><img class="small" src="images/show.png" alt="" title="查看"/></a>-->-->
-<!--<!--            <a href="index.php?act=renameFolder&path=-->--><?php ////echo $path;?><!--<!--&dirname=-->--><?php ////echo $p;?><!--<!--"><img class="small" src="images/rename.png" alt="" title="重命名"/></a>-->-->
-<!--<!--            <a href="index.php?act=copyFolder&path=-->--><?php ////echo $path;?><!--<!--&dirname=-->--><?php ////echo $p;?><!--<!--"><img class="small" src="images/copy.png" alt="" title="复制"/></a>-->-->
-<!--<!--            <a href="index.php?act=cutFolder&path=-->--><?php ////echo $path;?><!--<!--&dirname=-->--><?php ////echo $p; ?><!--<!--"><img class="small" src="images/cut.png" alt="" title="剪切"/></a>-->-->
-<!--<!--            <a href="#" onclick="delFolder('-->--><?php ////echo $p; ?><!--//','--><?php ////echo $path?><!--//')"><img class="small" src="images/delete.png" alt="" title="删除"/></a>-->
-<!--        </td>-->
-<!--    </tr>-->
+     <?php
+        if($data['dir']) {
+            $i = 1;
+            foreach ($data['dir'] as $v) {
+                $p = $path . "/" . $v;
+                //var_dump($p);
+     ?>
+
+                <tr>
+                    <td><?php echo $i; ?></td>
+                    <td><?php echo $v ?></td>
+                    <td><?php $src = filetype($p)=="file"?"file_ico.png":"folder_ico.png" ?><img src="images/<?php echo $src; ?>" title="文件夹"></td>
+                    <td><?php $sum=0; echo trans_byte(dir_size($p));?></td>
+                    <td><?php $src = is_readable($p)?"correct.png":"error.png" ?><img class="small" src="images/<?php echo $src; ?>"></td>
+                    <td><?php $src = is_writable($p)?"correct.png":"error.png" ?><img class="small" src="images/<?php echo $src; ?>"></td>
+                    <td><?php $src = is_executable($p)?"correct.png":"error.png" ?><img class="small" src="images/<?php echo $src; ?>"></td>
+                    <td><?php echo date('Y-m-d H:i:s',filectime($p)) ?></td>
+                    <td><?php echo date('Y-m-d H:i:s',filemtime($p)) ?></td>
+                    <td><?php echo date('Y-m-d H:i:s',fileatime($p)) ?></td>
+                    <td>111
+                        <a href="index.php?path=<?php echo $p; ?>"><img class="small" src="images/show.png" alt=""
+                                                                        title="查看"/></a>
+                        <a href="index.php?act=renameFolder&path=<?php echo $path; ?>&dirname=<?php echo $p; ?>"><img
+                                    class="small" src="images/rename.png" alt="" title="重命名"/></a>
+                        <a href="index.php?act=copyFolder&path=<?php echo $path; ?>&dirname=<?php echo $p; ?>"><img
+                                    class="small" src="images/copy.png" alt="" title="复制"/></a>
+                        <a href="index.php?act=cutFolder&path=<?php echo $path; ?>&dirname=<?php echo $p; ?>"><img
+                                    class="small" src="images/cut.png" alt="" title="剪切"/></a>
+                        <a href="#" onclick="delFolder('<?php echo $p; ?>//','<?php echo $path ?>//')"><img
+                                    class="small" src="images/delete.png" alt="" title="删除"/></a>
+                    </td>
+                </tr>
+     <?php
+            $i++;
+            }
+        }
+    ?>
 
 </table>
 </body>
