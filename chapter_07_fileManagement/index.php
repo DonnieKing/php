@@ -1,6 +1,8 @@
 <?php
+// 引入路径配置
 include "config.php";
-//var_dump($data);
+// 引入操作配置
+include "operation.php";
 ?>
 <!doctype html>
 <html lang="en">
@@ -80,81 +82,85 @@ include "config.php";
         <th>操作</th>
     </tr>
     <?php
-        if($data['file'])
-        {
-            $i = 1;
-            foreach ($data['file'] as $v)
-            {
-                $p = $path."/".$v ;
-                //var_dump($p);
-
-    ?>
-    ?>
+    // 判断主目录下的文件
+    if (@$data['file']) {
+        // 设置起始编号
+        $i = 1;
+        // 循环遍历主目录下的内容
+        foreach ($data['file'] as $v) {
+            // 拼接文件路径
+            $p = $path . "/" . $v;
+            ?>
             <tr>
-                <td><?php echo $i; ?></td>
-                <td><?php echo $v; ?></td>
-                <td><?php $src = filetype($p) == "file"?"file_ico.png":"folder_ico.png"; ?><img src="images/<?php echo $src; ?>" title="文件"></td>
-                <td><?php echo trans_byte(filesize($p)); ?></td>
-                <td><?php $src = is_readable($p)?"correct.png":"error.png" ?><img class="small" src="images/<?php echo $src; ?>"></td>
-                <td><?php $src = is_writable($p)?"correct.png":"error.png" ?><img class="small" src="images/<?php echo $src; ?>"></td>
-                <td><?php $src = is_executable($p)?"correct.png":"error.png" ?><img class="small" src="images/<?php echo $src; ?>"></td>
-                <td><?php echo date('Y-m-d H:i:s',filectime($p)); ?></td>
-                <td><?php echo date('Y-m-d H:i:s',filemtime($p)); ?></td>
-                <td><?php echo date('Y-m-d H:i:s',fileatime($p)); ?></td>
-                <td>111
+                <td><?php echo $i;?></td>
+                <td><?php echo $v;?></td>
+                <td><?php $src = filetype($p)=="file"?"file_ico.png":"folder_ico.png" ?><img src="images/<?php echo $src;?>" title="文件"></td>
+                <td><?php echo trans_byte(filesize($p))?></td>
+                <td><?php $src = is_readable($p)?"correct.png":"error.png" ?><img class="small" src="images/<?php echo $src;?>"></td>
+                <td><?php $src = is_writable($p)?"correct.png":"error.png" ?> <img class="small" src="images/<?php echo $src;?>"></td>
+                <td><?php $src = is_executable($p)?"correct.png":"error.png" ?> <img class="small" src="images/<?php echo $src;?>"></td>
+                <td><?php echo date("Y-m-d H:i:s",filectime($p))?></td>
+                <td><?php echo date("Y-m-d H:i:s",filemtime($p))?></td>
+                <td><?php echo date("Y-m-d H:i:s",fileatime($p))?></td>
+                <td>
+                    <?php
+                    $ext = strtolower(pathinfo($v,PATHINFO_EXTENSION));
+                    $imagesExt = ['gif','png','jpg','jpeg'];
+                    if (in_array($ext,$imagesExt)){
+                        ?>
+                        <a href="#" onclick="showDetail('<?php echo $v;?>','<?php echo $p;?>')"> <img class="small" src="images/show.png" alt="" title="查看"/></a>
+                        <?php
+                    }else{
+                        ?>
+                        <a href="index.php?act=showContent&path=<?php echo $path;?>&filename=<?php echo $p;?>"><img class="small" src="images/show.png" alt="" title="查看"/></a>
+                        <?php
+                    }
+                    ?>
                     <a href="index.php?act=editContent&path=<?php echo $path;?>&filename=<?php echo $p;?>"><img class="small" src="images/edit.png" alt="" title="修改"/></a>
                     <a href="index.php?act=renameFile&path=<?php echo $path; ?>&filename=<?php echo $p;?>"><img class="small" src="images/rename.png" alt="" title="重命名"/></a>
                     <a href="index.php?act=copyFile&path=<?php echo $path; ?>&filename=<?php echo $p;?>" ><img class="small" src="images/copy.png" alt="" title="复制"/></a>
                     <a href="index.php?act=cutFile&path=<?php echo $path; ?>&filename=<?php echo $p;?>"><img class="small" src="images/cut.png" alt="" title="剪切"/></a>
                     <a href="index.php?act=dowFile&path=<?php echo $path; ?>&filename=<?php echo $p;?>"><img class="small" src="images/download.png" alt="" title="下载"/></a>
-                    <a href="#" onclick="delFile('<?php echo $p;?>//','<?php echo $path; ?>//')"><img class="small" src="images/delete.png" alt="" title="删除"/></a>
+                    <a href="#" onclick="delFile('<?php echo $p;?>','<?php echo $path; ?>')"><img class="small" src="images/delete.png" alt="" title="删除"/></a>
                 </td>
             </tr>
-     <?php
-                $i++;
-            }
-        }
-     ?>
-
-
-     <?php
-        if($data['dir']) {
-            $i = 1;
-            foreach ($data['dir'] as $v) {
-                $p = $path . "/" . $v;
-                //var_dump($p);
-     ?>
-
-                <tr>
-                    <td><?php echo $i; ?></td>
-                    <td><?php echo $v ?></td>
-                    <td><?php $src = filetype($p)=="file"?"file_ico.png":"folder_ico.png" ?><img src="images/<?php echo $src; ?>" title="文件夹"></td>
-                    <td><?php $sum=0; echo trans_byte(dir_size($p));?></td>
-                    <td><?php $src = is_readable($p)?"correct.png":"error.png" ?><img class="small" src="images/<?php echo $src; ?>"></td>
-                    <td><?php $src = is_writable($p)?"correct.png":"error.png" ?><img class="small" src="images/<?php echo $src; ?>"></td>
-                    <td><?php $src = is_executable($p)?"correct.png":"error.png" ?><img class="small" src="images/<?php echo $src; ?>"></td>
-                    <td><?php echo date('Y-m-d H:i:s',filectime($p)) ?></td>
-                    <td><?php echo date('Y-m-d H:i:s',filemtime($p)) ?></td>
-                    <td><?php echo date('Y-m-d H:i:s',fileatime($p)) ?></td>
-                    <td>111
-                        <a href="index.php?path=<?php echo $p; ?>"><img class="small" src="images/show.png" alt=""
-                                                                        title="查看"/></a>
-                        <a href="index.php?act=renameFolder&path=<?php echo $path; ?>&dirname=<?php echo $p; ?>"><img
-                                    class="small" src="images/rename.png" alt="" title="重命名"/></a>
-                        <a href="index.php?act=copyFolder&path=<?php echo $path; ?>&dirname=<?php echo $p; ?>"><img
-                                    class="small" src="images/copy.png" alt="" title="复制"/></a>
-                        <a href="index.php?act=cutFolder&path=<?php echo $path; ?>&dirname=<?php echo $p; ?>"><img
-                                    class="small" src="images/cut.png" alt="" title="剪切"/></a>
-                        <a href="#" onclick="delFolder('<?php echo $p; ?>//','<?php echo $path ?>//')"><img
-                                    class="small" src="images/delete.png" alt="" title="删除"/></a>
-                    </td>
-                </tr>
-     <?php
+            <?php
+            // 增长编号
             $i++;
-            }
         }
-    ?>
-
+    }
+    // 判断是否有目录
+    if (@$data['dir']){
+        // 编号
+        $i=1;
+        // 循环遍历主目录下的内容
+        foreach ($data['dir'] as $v){
+            // 拼接文件路径
+            $p = $path."/".$v;
+            ?>
+            <tr>
+                <td><?php echo $i;?></td>
+                <td><?php echo $v?></td>
+                <td><?php $src = filetype($p) =="file"?"file_ico.png":"folder_ico.png" ?><img src="images/<?php echo $src;?>" title="文件夹"></td>
+                <td><?php $sum=0; echo trans_byte(dir_size($p))?></td>
+                <td><?php $src = is_readable($p)?"correct.png":"error.png" ?><img class="small" src="images/<?php echo $src;?>"></td>
+                <td><?php $src = is_writable($p)?"correct.png":"error.png" ?> <img class="small" src="images/<?php echo $src;?>"></td>
+                <td><?php $src = is_executable($p)?"correct.png":"error.png" ?> <img class="small" src="images/<?php echo $src;?>"></td>
+                <td><?php echo date("Y-m-d H:i:s",filectime($p))?></td>
+                <td><?php echo date("Y-m-d H:i:s",filemtime($p))?></td>
+                <td><?php echo date("Y-m-d H:i:s",fileatime($p))?></td>
+                <td>
+                    <a href="index.php?path=<?php echo $p;?>"><img class="small" src="images/show.png" alt="" title="查看"/></a>
+                    <a href="index.php?act=renameFolder&path=<?php echo $path;?>&dirname=<?php echo $p;?>"><img class="small" src="images/rename.png" alt="" title="重命名"/></a>
+                    <a href="index.php?act=copyFolder&path=<?php echo $path;?>&dirname=<?php echo $p;?>"><img class="small" src="images/copy.png" alt="" title="复制"/></a>
+                    <a href="index.php?act=cutFolder&path=<?php echo $path;?>&dirname=<?php echo $p; ?>"><img class="small" src="images/cut.png" alt="" title="剪切"/></a>
+                    <a href="#" onclick="delFolder('<?php echo $p; ?>','<?php echo $path?>')"><img class="small" src="images/delete.png" alt="" title="删除"/></a>
+                </td>
+            </tr>
+            <?php
+            $i++;
+        }
+    }?>
 </table>
 </body>
 </html>
