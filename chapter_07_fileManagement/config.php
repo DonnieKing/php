@@ -2,7 +2,7 @@
 /**
  * 配置文件
  */
-//引入方法类库
+//引入文件方法类库
 include "function.php";
 //设置主目录
 $path = 'file';
