@@ -47,6 +47,7 @@ else if($act == 'editContent')
     $str = <<<HERE
 <form action="index.php?act=doEdit" method="post"> 
 <textarea cols=180 rows=10 name="content">{$content}</textarea>
+<input type="hidden" name="path" value="{$path}">
 <input type="hidden" name="filename" value="$filename"> 
 <input type="submit" value="提交">
 </form>
@@ -164,9 +165,18 @@ else if($act == 'delFile')
 }
 
 
+//  上传文件
 else if($act == "上传文件")
 {
     $fileInfo = $_FILES['myFile'];
     $mes = upload_file($fileInfo,$path);
+    alertMes($mes,$url);
+}
+
+
+//创建文件夹
+else if($act == '创建文件夹')
+{
+    $mes = create_folder($path."/".$dirname);
     alertMes($mes,$url);
 }
