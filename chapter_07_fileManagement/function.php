@@ -337,6 +337,8 @@ function dow_file($filename)
     header('Content-Disposition:attachment;filename='.basename($filename));
     //输出文件
     readfile($filename);
+    //不结束的话会将页面中的代码也读取出来
+    exit();
 }
 //dow_file('123.jpg');
 
@@ -569,7 +571,7 @@ function cut_dir($src,$dest)
     if(is_dir($dest))
     {
         // 拼接目标理解
-        $dest = $dest."/".$src;
+        $dest = $dest."/".basename($src);
         // 判断目标目录下是否存在相同目录
         if(!file_exists($dest))
         {
