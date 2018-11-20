@@ -180,3 +180,73 @@ else if($act == '创建文件夹')
     $mes = create_folder($path."/".$dirname);
     alertMes($mes,$url);
 }
+
+//文件夹重命名
+else if($act == 'renameFolder')
+{
+    $str = <<<HERE
+<form action="index.php?act=doRenameFolder" method="post">
+请输入新名字：<input type="text" name="newName">
+<input type="hidden" name="path" value="{$path}">
+<input type="hidden" name="dirname" value="{$dirname}">
+<input type="submit" value="重命名">
+</form> 
+HERE;
+    echo $str;
+}
+else if($act == 'doRenameFolder')
+{
+    $newName = $_REQUEST['newName'];
+    $mes = rename_dir($dirname,$path."/".$newName);
+    alertMes($mes,$url);
+}
+
+
+//文件夹复制
+else if($act == 'copyFolder')
+{
+    $str = <<<HERE
+<form action="index.php?act=doCopyFolder" method="post">
+请输入要复制到的路径：<input type="text" name="newName">
+<input type="hidden" name="path" value="{$path}">
+<input type="hidden" name="dirname" value="{$dirname}">
+<input type="submit" value="提交">
+</form> 
+HERE;
+    echo $str;
+}
+else if($act == 'doCopyFolder')
+{
+    $newName = $_REQUEST['newName'];
+    $mes = copy_dir($dirname,$path."/".$newName."/".basename($dirname));
+    alertMes($mes,$url);
+}
+
+//文件夹的剪切
+else if($act == 'cutFolder')
+{
+    $str = <<<HERE
+<form action="index.php?act=doCutFolder" method="post">
+请输入要剪切到的路径：<input type="text" name="newName" placeholder="要剪切到的路径">
+<input type="hidden" name="path" value="{$path}">
+<input type="hidden" name="dirname" value="{$dirname}">
+<input type="submit" value="提交">
+</form>
+HERE;
+    echo $str;
+}
+else if($act == 'doCutFolder')
+{
+    $newName = $_REQUEST['newName'];
+    $mes = cut_dir($dirname,$path."/".$newName);
+    alertMes($mes,$url);
+}
+
+
+//文件夹的删除
+else if($act == 'delFolder')
+{
+     $mes = del_folder($dirname);
+     alertMes($mes,$url);
+
+}
