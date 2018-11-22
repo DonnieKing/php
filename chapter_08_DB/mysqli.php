@@ -19,10 +19,10 @@ header("Content-Type:text/html;charset=utf-8");
 
   //获取当前时间戳
   $add_time = time();
-  $sql = "INSERT INTO `director` (`name`,`phone`,`country`,`add_time`) VALUES ('李安','18855556666','中国','{$add_time }')";
-  echo insert($db,$sql);
-
-
+  $sql_1 = "INSERT INTO `director` (`name`,`phone`,`country`,`add_time`) VALUES ('李安','18855556666','中国','{$add_time }');";
+  $sql_2 = "UPDATE `director` set name = '黄渤',phone='15566662222' WHERE tid = 4 ;";
+  $sql_3 = "DELETE FROM `director` WHERE tid = 6;";
+  var_dump(delete($db,$sql_3));
 
 
 
@@ -41,3 +41,17 @@ header("Content-Type:text/html;charset=utf-8");
       }
       return $return;
   }
+
+  //修改数据
+  function save($db,$sql)
+  {
+      $return = mysqli_query($db,$sql);
+      return $return;
+  }
+
+  //删除数据
+   function delete($db,$sql)
+   {
+       $return = mysqli_query($db,$sql);
+       return $return;
+   }
