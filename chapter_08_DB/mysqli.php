@@ -22,12 +22,36 @@ header("Content-Type:text/html;charset=utf-8");
   $sql_1 = "INSERT INTO `director` (`name`,`phone`,`country`,`add_time`) VALUES ('李安','18855556666','中国','{$add_time }');";
   $sql_2 = "UPDATE `director` set name = '黄渤',phone='15566662222' WHERE tid = 4 ;";
   $sql_3 = "DELETE FROM `director` WHERE tid = 6;";
-  var_dump(delete($db,$sql_3));
+  $sql_4 = "INSERT INTO `users` (name,phone,country,birthday,weight,height,add_time) VALUES ('周星驰','16655556666','中国','1965-1-20',140,175,'{$add_time }');";
+  $sql_5 = "SELECT * FROM `users` ORDER BY uid DESC LIMIT 0,5;";
 
+
+   //echo '<pre>'.var_export(select($db,'user','country="中国"','uid DESC'),true);
+   echo '<pre>'.var_export(select($db,$sql_5),true);
 
 
   //关闭数据库
   mysqli_close($db);
+
+
+  //查询数据库
+  function select($db,$sql)
+  {
+      //$sql = 'SELECT * FROM '.$table.' WHERE '.$where.' ORDER BY '.$order;;
+      //echo $sql;
+      $return = mysqli_query($db,$sql);
+      if($return)
+      {
+          //mysqli_fetch_assoc() 函数从结果集中取得一行作为关联数组。
+          while($row = mysqli_fetch_assoc($return))
+          {
+              $rows[] = $row;
+          }
+          //mysql_free_result() 函数释放结果内存。成功返回true，失败返回false
+          mysqli_free_result($return);
+      }
+      return $rows;
+  }
 
 
   //插入数据
