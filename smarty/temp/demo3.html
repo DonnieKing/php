@@ -1,0 +1,55 @@
+{* 注释：显示变量 *}
+
+<h3>我的梦中情人是：{$name}</h3>
+<h3>我的梦中情人是：{" $name,`$book.name`    "}</h3>
+
+{* 显示索引数组元素 *}
+<p>前端课程有：{$course[0]},{$course[1]},{$course[2]}</p>
+<p>前端课程有：{$course.0},{$course.1},{$course.2}</p>
+<p>前端课程有：{$course['0']},{$course['1']},{$course['2']}</p>
+
+{* 显示关联数组 *}
+<p>书名：《{$book.name}》,价格：{$book.price}元,出版时间： {$book.publish}</p>
+
+<hr>
+
+{* 显示多维数组 *}
+<p>书名：《{$books.1.name}》,价格：{$books.1.price}元,出版时间： {$books.1.publish}</p>
+<p>书名：《{$books.2.name}》,价格：{$books.2.price}元,出版时间： {$books.2.publish}</p>
+<p>书名：《{$books.0.name}》,价格：{$books.0.price}元,出版时间： {$books.0.publish}</p>
+<hr>
+{foreach $books as $b}
+<p>
+    书名：{$b.name}<br>
+    价格：{$b.price}<br>
+    出版时间：{$b.publish}<br>
+</p>
+{foreachelse}
+<h3 style="color: red">无结果</h3>
+{/foreach}
+
+<hr>
+
+{* 显示对象中的成员 *}
+<p>{$test->site}</p>
+<h3>{$test->welcome()}</h3>
+
+<hr>
+
+{* 自定义函数 *}
+<p>{add($books.1.price,20)}</p>
+
+{* 常量 *}
+<p>{$smarty.const.NAME}</p>
+
+{* 显示系统常量 *}
+<p>post提交的用户名是：{$smarty.post.username}</p>
+<p>get提交的手机号是：{$smarty.get.tel}</p>
+<p>session保存的密码是：{$smarty.session.pass}</p>
+
+<hr>
+
+{* 读取配置文件 *}
+{config_load file="app.conf"}
+<p>{$smarty.config.app_name}</p>
+<p>{$smarty.config.page_title}</p>

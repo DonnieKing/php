@@ -1,0 +1,85 @@
+{* 1.模板中定义变量 *}
+{assign var="name" value='DonnieKing'}
+<p>{$name}</p>
+{* 定义变量的简写 *}
+{$model = "wangchu"}
+<p>{$model}</p>
+
+
+{* 2.模板中的分支处理 *}
+    {* 判断是否为奇数 *}
+    {$data=37}
+    {if $data is odd}
+    <p style="color: #3e24bd">{$data}是奇数</p>
+    {else}
+    <p style="color: #1c94c4">{$data}是偶数</p>
+    {/if}
+
+    {$grade=50}
+    {if $grade>90}
+    <p>优秀</p>
+    {elseif $grade>=60}
+    <p>及格</p>
+    {else}
+    <p style="color: red">准备补考吧</p>
+    {/if}
+
+
+{* 3.for循环 *}
+    {for $i=2 to 10 step 2 }
+    {$i},
+        {forelse}
+        <span style="color: red">循环条件错误</span>
+    {/for}
+
+
+{* 4.while循环 *}
+<p>
+    {$m=1}
+    {while ($m<10)}
+    {$m++},
+    {/while}
+</p>
+<hr>
+
+{* 5.foreach主要用来遍历数组 *}
+    {$student = ['name'=>'DonnieKign','sex'=>'男','salary'=>'80000']}
+    {foreach $student as $key=>$value}
+    {$key}=>{$value}<br>
+    {/foreach}
+<hr>
+    {$mobile = [
+        ['brand'=>'华为','model'=>'Mate20 Pro','price'=>'6666'],
+        ['brand'=>'苹果','model'=>'Iphone XS MAX','price'=>'12999'],
+        ['brand'=>'小米','model'=>'Mi 3','price'=>'4999']
+]}
+    {* $mobile=[] 置空 *}
+    {foreach $mobile as $value}
+        <li>品牌：{$value.brand}，型号：{$value.model}，价格：{$value.price}</li>
+    {foreachelse}
+          <span style="color: red">没有数据</span>
+    {/foreach}
+
+<hr>
+
+{*6.直接在模板中定义函数：直接用默认值,site自定义一个变量 *}
+{function name="welcome" site="中北大学"}
+<p>欢迎来到{$site}来学习</p>
+{/function}
+
+{* 调用自定义函数 *}
+{call name="welcome"}
+{call name="welcome" site="DonnieKing的github中"}
+
+
+{* 自定义函数也可以简写 *}
+{* 定义简写 *}
+{function hello site="中北大学"}
+<p>我是({$site})的学生DonnieKing</p>
+{/function}
+
+{* 调用简写 *}
+{hello}
+
+{* 调用简写 *}
+{hello site="nuc中北大学"}

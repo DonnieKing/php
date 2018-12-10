@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+     <table border="1" cellspacing="0" cellpadding="5" width="60%" align="center">
+         <caption><h2>用户信息表</h2></caption>
+        <tr bgcolor="#7fffd4">
+            <th>id</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>年龄</th>
+            <th>邮箱</th>
+            <th>创建时间</th>
+        </tr>
+          <!--使用Smarty模板引擎进行改写-->
+         {foreach $rows as $row}
+         <tr>
+             <td>{$row.user_id}</td>
+             <td>{$row.name}</td>
+             <td>{$row.sex}</td>
+             <td>{$row.age}</td>
+             <td>{$row.email}</td>
+             <td>{$row.create_time|date_format:"Y年m月d日"}</td>
+             <!--date_format: %Y %m %d-->
+         </tr>
+         {foreachelse}
+         <h2 style="color: red">暂无数据</h2>
+         {/foreach}
+     </table>
+
+</body>
+</html>
+
+
